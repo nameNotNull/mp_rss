@@ -1,0 +1,51 @@
+<!--index.wxml-->
+<import src="/wxParse/wxParse.wxml" />
+<scroll-view scroll-y="true" class="container" bindscrolltoupper="upper" upper-threshold="10" lower-threshold="5" bindscrolltolower="lower" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+  <block wx:for="{{feed}}" wx:for-index="">
+    <view class="feed-item">
+      <view class="feed-source">
+        <a class="">
+          <view class="avatar">
+            <image src="{{item.image}}"></image>
+          </view>
+          <text>{{item.author.name}}{{item.date_published}}</text>
+        </a>
+        <image class="item-more" mode="aspectFit" src="../../images/more.png"></image>
+      </view>
+      <view class="feed-content">
+        <view class="question" qid="{{question_id}}" bindtap="bindQueTap">
+          <a class="question-link">
+            <text>{{item.title}}</text>
+          </a>
+        </view>
+        <view class="answer-body">
+          <view bindtap="bindItemTap" class="wxParse-img"  data-url='{{item.id}}'>
+            <!-- <text class="answer-txt" aid="{{answer_id}}"></text> -->
+            <!-- <template is="wxParse" data="{{wxParseData:article.nodes}}" /> -->
+              <!-- <template is="wxParse" data="{{wxParseData:item}}" /> -->
+              <template is="wxParse" data="{{wxParseData:item.contentindex.nodes}}"  />
+
+            <!-- <block wx:for="{{contentarry}}" wx:key="">
+            </block> -->
+          </view>
+          <view class="answer-actions" bindtap="bindItemTap">
+            <view class="like dot">
+              <a>{{item.good_num}} 赞同 </a>
+            </view>
+            <view class="comments dot">
+              <a>{{item.comment_num}} 评论 </a>
+            </view>
+            <view class="follow-it">
+              <a>关注问题</a>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+  <block>
+    <view>
+
+    </view>
+  </block>
+</scroll-view>

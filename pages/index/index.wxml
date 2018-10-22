@@ -19,7 +19,7 @@
           </a>
         </view>
         <view class="answer-body">
-          <view bindtap="bindItemTap" class="wxParse-img"  data-url='{{item.id}}'>
+          <view bindtap="bindItemTap" class="wxParse-img"  data-id='{{item.id}}'>
             <!-- <text class="answer-txt" aid="{{answer_id}}"></text> -->
             <!-- <template is="wxParse" data="{{wxParseData:article.nodes}}" /> -->
               <!-- <template is="wxParse" data="{{wxParseData:item}}" /> -->

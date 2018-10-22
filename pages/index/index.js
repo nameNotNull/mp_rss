@@ -18,7 +18,7 @@ Page({
   //事件处理函数
   bindItemTap: function (event) {
     wx.navigateTo({
-      url: '../answer/answer?url='+event.currentTarget.dataset.url
+      url: '../answer/answer?id='+event.currentTarget.dataset.id
     })
   },
   onLoad: function() {
@@ -28,16 +28,16 @@ Page({
     this.getData();
   },
   getData: function() {
-    return util.getData("http://rss.dev.com/rss/search.json?source=zhihu&type=hotlist").then(
+    return util.getData("http://rss.dev.com/rss/search.json?source=zhihu&type=daily").then(
       (res) => {
         console.log(res)
         let feed = res.data.data;
         for (let i = 0; i < feed.length; i++) {
-          WxParse.wxParse('content' + i, 'html', util.tw2sw_string(feed[i].description), this);
+          WxParse.wxParse('content' + i, 'html', util.tw2sw_string(feed[i].content), this);
           if ( i=== feed.length - 1) {
             WxParse.wxParseTemArray("contentarry", 'content', feed.length, this)
           }
-          feed[i].summary = util.tw2sw_string(feed[i].description)
+          feed[i].summary = util.tw2sw_string(feed[i].content)
           var contentIndex = 'content' + i;
           feed[i].contentindex = this.data[contentIndex]
           

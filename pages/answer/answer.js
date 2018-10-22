@@ -16,13 +16,13 @@ Page({
   },
   onLoad: function (options) {
     var that = this
-    var url= options.url;
+    var url = 'http://rss.dev.com/rss/detail.json?source=zhihu&type=daily&id='+options.id;
     console.log(url);
-    return util.getData('https://www.zhihu.com/rss').then(
+    return util.getData(url).then(
       (res) => {
-        console.log(res.data)
+        console.log(res.data.data)
 
-        var html = res.data;
+        var html = res.data.data.content;
         WxParse.wxParse('article', 'html', html, this, 5);
         // let feed = res.data.items;
         // for (let i = 0; i < feed.length; i++) {

@@ -28,7 +28,9 @@ Page({
     this.getData();
   },
   getData: function() {
-    return util.getData("http://rss.dev.com/rss/search.json?source=zhihu&type=daily").then(
+    var url = 'http://rss.dev.com/rss/search.json?source=zhihu&type=hotlist';
+    // var url = 'http://rss.dev.com/rss/search.json?source=zhihu&type=daily';
+    return util.getData(url).then(
       (res) => {
         console.log(res)
         let feed = res.data.data;

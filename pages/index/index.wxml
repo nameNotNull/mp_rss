@@ -15,16 +15,22 @@
       <view class="feed-content">
         <view class="question" qid="{{question_id}}" bindtap="bindQueTap">
           <a class="question-link">
-            <text>{{item.title}}</text>
+            <!-- <text>{{item.title}}</text> -->
           </a>
         </view>
         <view class="answer-body">
-          <view bindtap="bindItemTap" class="wxParse-img"  data-id='{{item.id}}'>
+          <view bindtap="bindItemTap" class="wxParse-img" data-id='{{item.id}}'>
             <!-- <text class="answer-txt" aid="{{answer_id}}"></text> -->
             <!-- <template is="wxParse" data="{{wxParseData:article.nodes}}" /> -->
-              <!-- <template is="wxParse" data="{{wxParseData:item}}" /> -->
-              <template is="wxParse" data="{{wxParseData:item.contentindex.nodes}}"  />
+            <!-- <template is="wxParse" data="{{wxParseData:item}}" /> -->
+            <!-- <template is="wxParse" data="{{wxParseData:item.contentindex.nodes}}" /> -->
 
+            <div class="item-container images">
+              <div class="item-title">{{item.title}}</div>
+              <div class="item-images">
+               <image src="{{item.images}}" mode="widthFix" :lazy-load="true"></image>
+              </div>
+            </div>
             <!-- <block wx:for="{{contentarry}}" wx:key="">
             </block> -->
           </view>

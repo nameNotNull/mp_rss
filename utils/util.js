@@ -31,7 +31,7 @@ function getData(url){
       url: url,
       data: {},
       header: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       success: function(res) {
         console.log("success")

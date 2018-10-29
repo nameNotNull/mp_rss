@@ -79,6 +79,7 @@
         width: 67%;
         font-size: 14px;
         padding-right: 15px;
+        line-height:20px;
         color: #000;
         -webkit-line-clamp: 3;
         text-overflow: ellipsis;

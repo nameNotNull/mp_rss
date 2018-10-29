@@ -34,18 +34,6 @@
         "selectedIconPath": "images/discovery_focus.png"
       },
       {
-        "pagePath": "pages/notify/notify",
-        "text": "",
-        "iconPath": "images/ring.png",
-        "selectedIconPath": "images/ring_focus.png"
-      },
-      {
-        "pagePath": "pages/chat/chat",
-        "text": "",
-        "iconPath": "images/chat.png",
-        "selectedIconPath": "images/chat_focus.png"
-      },
-      {
         "pagePath": "pages/more/more",
         "text": "",
         "iconPath": "images/burger.png",

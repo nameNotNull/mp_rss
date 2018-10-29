@@ -27,12 +27,23 @@ Page({
     //调用应用实例的方法获取全局数据
     this.getData();
   },
+  upper: function () {
+    wx.showNavigationBarLoading()
+    this.refresh();
+    console.log("upper");
+    setTimeout(function () { wx.hideNavigationBarLoading(); wx.stopPullDownRefresh(); }, 1000);
+  },
+  lower: function (e) {
+    wx.showNavigationBarLoading();
+    var that = this;
+    setTimeout(function () { wx.hideNavigationBarLoading(); that.refresh(); }, 1000);
+    console.log("lower")
+  },
   getData: function() {
     // var url = 'http://rss.dev.com/rss/search.json?source=zhihu&type=hotlist';
     var url = 'http://rss.dev.com/rss/search.json?source=zhihu&type=daily';
     return util.getData(url).then(
       (res) => {
-        console.log(res)
         let feed = res.data.data;
         for (let i = 0; i < feed.length; i++) {
           WxParse.wxParse('content' + i, 'html', util.tw2sw_string(feed[i].content), this);
@@ -44,7 +55,6 @@ Page({
           feed[i].contentindex = this.data[contentIndex]
           
         }
-        console.log(this)
 
         this.setData({
           feed: feed,
@@ -66,13 +76,29 @@ Page({
       icon: 'loading',
       duration: 3000
     });
-    var feed = util.getData2();
-    console.log("loaddata");
-    var feed_data = feed.data;
-    this.setData({
-      feed: feed_data,
-      feed_length: feed_data.length
-    });
+    var url = 'http://rss.dev.com/rss/search.json?source=zhihu&type=daily';
+    util.getData(url).then(
+      (res) => {
+        console.log(res)
+        let feed = res.data.data;
+        for (let i = 0; i < feed.length; i++) {
+          WxParse.wxParse('content' + i, 'html', util.tw2sw_string(feed[i].content), this);
+          if (i === feed.length - 1) {
+            WxParse.wxParseTemArray("contentarry", 'content', feed.length, this)
+          }
+          feed[i].summary = util.tw2sw_string(feed[i].content)
+          var contentIndex = 'content' + i;
+          feed[i].contentindex = this.data[contentIndex]
+
+        }
+
+        this.setData({
+          feed: feed,
+        })
+
+      }
+    );
+    
     setTimeout(function () {
       wx.showToast({
         title: '刷新成功',
@@ -91,7 +117,7 @@ Page({
       icon: 'loading',
       duration: 4000
     })
-    var next = util.getNext();
+    var next = util.getData();
     console.log("continueload");
     var next_data = next.data;
     this.setData({

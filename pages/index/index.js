@@ -12,7 +12,8 @@ Page({
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     imageURL: '//img.yzcdn.cn/upload_files/2017/07/02/af5b9f44deaeb68000d7e4a711160c53.jpg',
-    feed: {}
+    feed: [],
+    config: []
   },
 
   //事件处理函数
@@ -21,11 +22,19 @@ Page({
       url: '../answer/answer?id='+event.currentTarget.dataset.id
     })
   },
-  onLoad: function() {
+  onLoad: function (options) {
     console.log('onLoad')
-    var that = this
+    this.getConfig();
+    var url ='';
+    console.log(options)
+    if(options.type == 1){
+      url = 'http://rss.dev.com/rss/search.json?source=zhihu&type=daily';
+    }else{
+      url = 'http://rss.dev.com/rss/search.json?source=zhihu&type=daily';
+    }
+
     //调用应用实例的方法获取全局数据
-    this.getData();
+    this.getData(url);
   },
   upper: function () {
     wx.showNavigationBarLoading()
@@ -39,27 +48,13 @@ Page({
     setTimeout(function () { wx.hideNavigationBarLoading(); that.refresh(); }, 1000);
     console.log("lower")
   },
-  getData: function() {
-    // var url = 'http://rss.dev.com/rss/search.json?source=zhihu&type=hotlist';
-    var url = 'http://rss.dev.com/rss/search.json?source=zhihu&type=daily';
+  getData: function(url) {
     return util.getData(url).then(
       (res) => {
         let feed = res.data.data;
-        for (let i = 0; i < feed.length; i++) {
-          WxParse.wxParse('content' + i, 'html', util.tw2sw_string(feed[i].content), this);
-          if ( i=== feed.length - 1) {
-            WxParse.wxParseTemArray("contentarry", 'content', feed.length, this)
-          }
-          feed[i].summary = util.tw2sw_string(feed[i].content)
-          var contentIndex = 'content' + i;
-          feed[i].contentindex = this.data[contentIndex]
-          
-        }
-
         this.setData({
           feed: feed,
         })
-        
       }
     );
   },
@@ -79,18 +74,17 @@ Page({
     var url = 'http://rss.dev.com/rss/search.json?source=zhihu&type=daily';
     util.getData(url).then(
       (res) => {
-        console.log(res)
         let feed = res.data.data;
-        for (let i = 0; i < feed.length; i++) {
-          WxParse.wxParse('content' + i, 'html', util.tw2sw_string(feed[i].content), this);
-          if (i === feed.length - 1) {
-            WxParse.wxParseTemArray("contentarry", 'content', feed.length, this)
-          }
-          feed[i].summary = util.tw2sw_string(feed[i].content)
-          var contentIndex = 'content' + i;
-          feed[i].contentindex = this.data[contentIndex]
+        // for (let i = 0; i < feed.length; i++) {
+        //   WxParse.wxParse('content' + i, 'html', util.tw2sw_string(feed[i].content), this);
+        //   if (i === feed.length - 1) {
+        //     WxParse.wxParseTemArray("contentarry", 'content', feed.length, this)
+        //   }
+        //   feed[i].summary = util.tw2sw_string(feed[i].content)
+        //   var contentIndex = 'content' + i;
+        //   feed[i].contentindex = this.data[contentIndex]
 
-        }
+        // }
 
         this.setData({
           feed: feed,
@@ -131,5 +125,20 @@ Page({
         duration: 2000
       })
     }, 3000)
+  },
+  getConfig:function(){
+    var that = this
+    let config = that.data.config;
+    var app = getApp();
+    var rssConf = wx.getStorageSync('config');
+    
+    config.push(wx.getStorageSync('config'))
+    app.globalData.config = config
+  },
+  globalData:{
+    config:[]
   }
+
+
+
 })

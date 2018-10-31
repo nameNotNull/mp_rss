@@ -20,7 +20,7 @@ module.exports = {
   formatTime: formatTime
 };
 
-var index = require('../data/data_index.js')
+var index = require('../data/config.js')
 var index_next = require('../data/data_index_next.js')
 var discovery = require('../data/data_discovery.js')
 var discovery_next = require('../data/data_discovery_next.js')

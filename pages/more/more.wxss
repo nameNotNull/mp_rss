@@ -112,36 +112,8 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-  line-height: 28rpx;
-  height: 45rpx;
-  margin-left: 50rpx;
-    vertical-align:middle;  
+  line-height: 30rpx;
+  display: block
     
 }
-/*checkbox 整体大小  */
-checkbox {
-  height: 45rpx;
-  display: inline-block;
-  vertical-align:middle;  
-}
-/*checkbox 选项框大小  */
-checkbox .wx-checkbox-input {
-  width: 30rpx;
-  height: 30rpx;
-}
-/*checkbox选中后样式  */
-checkbox .wx-checkbox-input.wx-checkbox-input-checked {
-  background: rgb(25, 117, 6);
-}
-/*checkbox选中后图标样式  */
-checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
-  width: 28rpx;
-  height: 28rpx;
-  line-height: 28rpx;
-  text-align: center;
-  font-size: 22rpx;
-  color: #fff;
-  background: transparent;
-  transform: translate(-50%, -50%) scale(1);
-  -webkit-transform: translate(-50%, -50%) scale(1);
-}
+

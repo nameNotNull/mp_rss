@@ -2,8 +2,10 @@
 //获取应用实例
 var util = require('../../utils/util.js')
 var WxParse = require('../../wxParse/wxParse.js');
+var config = require('../../data/config.js');
 const app = getApp()
-
+var rssType = 1;
+var page = 1;
 
 
 Page({
@@ -23,29 +25,38 @@ Page({
     })
   },
   onLoad: function (options) {
-    console.log('onLoad')
     this.getConfig();
-    var url ='';
+    console.log(config)
     console.log(options)
-    if(options.type == 1){
+    console.log('----------')
+    
+    var url ='';
+    if(options.type == 1 || options.type == null){
+      // url = 'https://www.xiaomiao.mobi/rss/search.json?source=zhihu&type=daily';
       url = 'http://rss.dev.com/rss/search.json?source=zhihu&type=daily';
+      rssType = 1;
     }else{
-      url = 'http://rss.dev.com/rss/search.json?source=zhihu&type=daily';
+      // url = 'https://www.xiaomiao.mobi/rss/search.json?source=zhihu&type=daily';
+      url = 'http://rss.dev.com/rss/search.json?source=sina&type=daily';
+      rssType = 2;      
     }
 
     //调用应用实例的方法获取全局数据
+    console.log(url)
     this.getData(url);
   },
   upper: function () {
     wx.showNavigationBarLoading()
-    this.refresh();
+    page = page+1;
+    this.refresh(rssType,page);
     console.log("upper");
     setTimeout(function () { wx.hideNavigationBarLoading(); wx.stopPullDownRefresh(); }, 1000);
   },
   lower: function (e) {
     wx.showNavigationBarLoading();
+    page = page+1;
     var that = this;
-    setTimeout(function () { wx.hideNavigationBarLoading(); that.refresh(); }, 1000);
+    setTimeout(function () { wx.hideNavigationBarLoading(); that.refresh(rssType,page); }, 1000);
     console.log("lower")
   },
   getData: function(url) {
@@ -65,29 +76,27 @@ Page({
       hasUserInfo: true
     })
   },
-  refresh: function () {
+  refresh: function (source,pagenum) {
     wx.showToast({
       title: '刷新中',
       icon: 'loading',
       duration: 3000
     });
-    var url = 'http://rss.dev.com/rss/search.json?source=zhihu&type=daily';
+    var url = '';
+    if (source == 1) {
+      // url = 'https://www.xiaomiao.mobi/rss/search.json?source=zhihu&type=daily';
+      url = 'http://rss.dev.com/rss/search.json?source=zhihu&type=daily';
+    } else {
+      // url = 'https://www.xiaomiao.mobi/rss/search.json?source=zhihu&type=daily';
+      url = 'http://rss.dev.com/rss/search.json?source=sina&type=daily&page='+pagenum+'&size=10';
+    }
     util.getData(url).then(
       (res) => {
-        let feed = res.data.data;
-        // for (let i = 0; i < feed.length; i++) {
-        //   WxParse.wxParse('content' + i, 'html', util.tw2sw_string(feed[i].content), this);
-        //   if (i === feed.length - 1) {
-        //     WxParse.wxParseTemArray("contentarry", 'content', feed.length, this)
-        //   }
-        //   feed[i].summary = util.tw2sw_string(feed[i].content)
-        //   var contentIndex = 'content' + i;
-        //   feed[i].contentindex = this.data[contentIndex]
-
-        // }
+        let content = res.data.data;
+        
 
         this.setData({
-          feed: feed,
+          feed: this.data.feed.concat(content),
         })
 
       }
@@ -128,12 +137,12 @@ Page({
   },
   getConfig:function(){
     var that = this
-    let config = that.data.config;
     var app = getApp();
     var rssConf = wx.getStorageSync('config');
-    
-    config.push(wx.getStorageSync('config'))
-    app.globalData.config = config
+    if(rssConf==null){
+      rssConf = config.config;
+    }
+    app.globalData.config = rssConf
   },
   globalData:{
     config:[]

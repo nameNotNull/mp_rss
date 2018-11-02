@@ -14,8 +14,8 @@ var config= {
       checked: true
     },
     {
-      name: '老司机',
-      icon: '/images/laosiji.jpeg',
+      name: '新浪',
+      icon: '/images/weibo.png',
       code: '2',
       checked: true
     },
@@ -26,9 +26,9 @@ var config= {
       checked: true
     },
     {
-      name: '微博',
+      name: 'laosiji',
       code: '4',
-      icon: '/images/weibo.png',
+      icon: '/images/laosiji.jpeg',
       checked: true
     },
     {

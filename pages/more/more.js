@@ -11,7 +11,6 @@ Page({
   },
   //事件处理函数
   bindItemTap: function (event) {
-    console.log('aa')
     wx.reLaunch({
       url: '../index/index?type=' + event.currentTarget.dataset.id
     })

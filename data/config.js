@@ -5,8 +5,8 @@ module.exports = {
 
 }
 
-// var host = 'https://www.xiaomiao.mobi';
-var host = 'http://rss.dev.com';
+var host = 'https://www.xiaomiao.mobi';
+// var host = 'http://rss.dev.com';
 
 var config= {
   routers: [

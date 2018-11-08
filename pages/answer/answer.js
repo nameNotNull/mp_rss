@@ -1,22 +1,19 @@
 //answer.js
 var util = require('../../utils/util.js')
 var WxParse = require('../../wxParse/wxParse.js');
+var config = require('../../data/config.js');
 
 var app = getApp()
 Page({
   data: {
-    motto: '知乎--微信小程序版',
+    motto: '小喵看看',
     userInfo: {}
   },
-  //事件处理函数
-  toQuestion: function() {
-    wx.navigateTo({
-      url: '../question/question'
-    })
-  },
+  
   onLoad: function (options) {
     var that = this
-    var url = 'https://www.xiaomiao.mobi/rss/detail.json?source='+options.source+'&type=daily&id='+options.id;
+    console.log(options)
+    var url = config.host+'/rss/detail.json?source='+options.source+'&type=daily&id='+options.id;
     return util.getData(url).then(
       (res) => {
         var html = res.data.data.content;

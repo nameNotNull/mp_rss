@@ -77,9 +77,9 @@
 }
 .item-title {
         width: 67%;
-        font-size: 15px;
+        font-size: 18px;
         padding-right: 15px;
-        line-height:20px;
+        line-height:30px;
         font-weight:bold;
         color: #000;
         -webkit-line-clamp: 3;

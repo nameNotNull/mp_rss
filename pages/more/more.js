@@ -17,7 +17,6 @@ Page({
   },
   onLoad: function () {
     var that = this
-    console.log(config.config)
     that.setData({
       routers:config.config
     })

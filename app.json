@@ -10,9 +10,9 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#0068C4",
+    "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTitleText": "小喵和小汪",
-    "navigationBarTextStyle": "white",
+    "navigationBarTextStyle": "black",
     "enablePullDownRefresh": true
   },
   "tabBar": {

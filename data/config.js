@@ -5,22 +5,25 @@ module.exports = {
 
 }
 
+// var host = 'https://www.xiaomiao.mobi';
+var host = 'http://rss.dev.com';
+
 var config= {
   routers: [
     {
-      name: '知乎',
+      name: '小喵看-知乎',
       icon: '/images/zhihu.jpg',
       code: '1',
       checked: true
     },
     {
-      name: '新浪',
+      name: '小喵看-新浪',
       icon: '/images/weibo.png',
       code: '2',
       checked: true
     },
     {
-      name: '小红书',
+      name: '小喵看-头条',
       icon: '/images/xiaohongshu.jpeg',
       code: '3',
       checked: true
@@ -66,3 +69,4 @@ var config= {
 }
 
 module.exports.config = config.routers;
+module.exports.host = host;

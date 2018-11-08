@@ -4,7 +4,7 @@ var util = require('../../utils/util.js')
 var WxParse = require('../../wxParse/wxParse.js');
 var config = require('../../data/config.js');
 const app = getApp()
-var rssType = 3;
+var rssType = 1;
 var pagenum = 1;
 var title = '头条';
 
@@ -38,7 +38,7 @@ Page({
     console.log(options)
     var url = '';
     if (options.type == null) {
-      rssType = 3;
+      rssType = 1;
     } else {
       rssType = parseInt(options.type);
     }

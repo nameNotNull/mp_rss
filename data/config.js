@@ -24,7 +24,7 @@ var config= {
     },
     {
       name: '小喵看-头条',
-      icon: '/images/xiaohongshu.jpeg',
+      icon: '/images/toutiao.png',
       code: '3',
       checked: true
     },

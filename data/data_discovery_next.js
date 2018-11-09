@@ -1,6 +1,3 @@
-/**
- * Created by Rebecca_Han on 16/10/27.
- */
 
 module.exports={
 

@@ -94,7 +94,26 @@
         /* overflow: hidden; */
                     
                 }
+.item-no-imgaes-title {
+        width: 100%;
+        font-size: 18px;
+        padding-right: 15px;
+        line-height:30px;
+        font-weight:bold;
+        color: #000;
+        -webkit-line-clamp: 3;
+        text-overflow: ellipsis;
+}
+.item-no-images {
+        width: 0%;
+        height: 78px;
+        display: flex;
+                align-items: center;
+        /* border-radius: 5px; */
+        /* overflow: hidden; */
+                    
+                }
 .imgage {
         display: block;
-        width: 100%;
+        /* width: 100%; */
         }

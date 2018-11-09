@@ -4,7 +4,7 @@ var util = require('../../utils/util.js')
 var WxParse = require('../../wxParse/wxParse.js');
 var config = require('../../data/config.js');
 const app = getApp()
-var rssType = 1;
+var rssType = 3;
 var pagenum = 1;
 var title = '头条';
 
@@ -22,7 +22,7 @@ Page({
 
     return {
       title: '小喵看看',
-      path: '/page/index'
+      path: 'pages/index/index'
     }
   },
 
@@ -38,7 +38,7 @@ Page({
     console.log(options)
     var url = '';
     if (options.type == null) {
-      rssType = 1;
+      rssType = 3;
     } else {
       rssType = parseInt(options.type);
     }
@@ -56,8 +56,6 @@ Page({
         url = config.host + '/rss/search.json?source=toutiao&type=daily&page=' + pagenum + '&size=10';
         break;
     }
-    console.log(url)
-    
 
     //调用应用实例的方法获取全局数据
     this.getData(url);
@@ -91,7 +89,6 @@ Page({
   getData: function(url) {
     return util.getData(url).then(
       (res) => {
-        console.log(res)
         let feed = res.data.data;
         this.setData({
           feed: feed,
@@ -141,56 +138,55 @@ Page({
 
 
 
-  setTimeout(function() {
+    setTimeout(function() {
+      wx.showToast({
+        title: '刷新成功',
+        icon: 'success',
+        duration: 1000
+      })
+    }, 1200)
+
+  },
+
+
+  //使用本地 fake 数据实现继续加载效果
+  nextLoad: function() {
     wx.showToast({
-      title: '刷新成功',
-      icon: 'success',
-      duration: 1000
+      title: '加载中',
+      icon: 'loading',
+      duration: 4000
     })
-  }, 1200)
-
-},
-
-
-//使用本地 fake 数据实现继续加载效果
-nextLoad: function() {
-  wx.showToast({
-    title: '加载中',
-    icon: 'loading',
-    duration: 4000
-  })
-  var next = util.getData();
-  console.log("continueload");
-  var next_data = next.data;
-  this.setData({
-    feed: this.data.feed.concat(next_data),
-    feed_length: this.data.feed_length + next_data.length
-  });
-  setTimeout(function() {
-    wx.showToast({
-      title: '加载成功',
-      icon: 'success',
-      duration: 2000
+    var next = util.getData();
+    var next_data = next.data;
+    this.setData({
+      feed: this.data.feed.concat(next_data),
+      feed_length: this.data.feed_length + next_data.length
+    });
+    setTimeout(function() {
+      wx.showToast({
+        title: '加载成功',
+        icon: 'success',
+        duration: 2000
+      })
+    }, 3000)
+  },
+  getConfig: function() {
+    var that = this
+    var app = getApp();
+    var rssConf = wx.getStorageSync('config');
+    if (!rssConf.length) {
+      rssConf = config.config;
+    }
+    app.globalData.config = rssConf
+  },
+  globalData: {
+    config: []
+  },
+  setTabTitle: function(title) {
+    wx.setNavigationBarTitle({
+      title: title
     })
-  }, 3000)
-},
-getConfig: function() {
-  var that = this
-  var app = getApp();
-  var rssConf = wx.getStorageSync('config');
-  if (!rssConf.length) {
-    rssConf = config.config;
   }
-  app.globalData.config = rssConf
-},
-globalData: {
-  config: []
-},
-setTabTitle: function(title) {
-  wx.setNavigationBarTitle({
-    title: title
-  })
-}
 
 
 

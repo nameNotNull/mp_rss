@@ -2,8 +2,8 @@ module.exports = {
 
 }
 
-var host = 'https://www.xiaomiao.mobi';
-// var host = 'http://rss.dev.com';
+// var host = 'https://www.xiaomiao.mobi';
+var host = 'http://rss.dev.com';
 
 var config= {
   routers: [
@@ -11,24 +11,28 @@ var config= {
       name: '小喵看-知乎',
       icon: '/images/zhihu.jpg',
       code: '1',
+      source: 'zhihu',
       checked: true
     },
     {
       name: '小喵看-新浪',
       icon: '/images/weibo.png',
       code: '2',
+      source: 'sina',
       checked: true
     },
     {
       name: '小喵看-头条',
       icon: '/images/toutiao.png',
       code: '3',
+      source: 'toutiao',
       checked: true
     },
     {
-      name: 'laosiji',
+      name: '小喵看-网易',
       code: '4',
-      icon: '/images/laosiji.jpeg',
+      icon: '/images/wangyi.jpeg',
+      source: 'wangyi',
       checked: true
     },
     {

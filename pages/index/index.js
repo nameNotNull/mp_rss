@@ -4,9 +4,9 @@ var util = require('../../utils/util.js')
 var WxParse = require('../../wxParse/wxParse.js');
 var config = require('../../data/config.js');
 const app = getApp()
-var rssType = 3;
+var source = 'toutiao';
 var pagenum = 1;
-var title = '头条';
+var title = '小喵看-头条';
 
 
 Page({
@@ -18,13 +18,12 @@ Page({
     feed: [],
     config: []
   },
-  onShareAppMessage: function(res) {
-
-    return {
-      title: '小喵看看',
-      path: 'pages/index/index'
-    }
-  },
+  // onShareAppMessage: function(res) {
+  //   return {
+  //     title: '小喵看看',
+  //     path: 'pages/index/index'
+  //   }
+  // },
 
 
   //事件处理函数
@@ -34,44 +33,12 @@ Page({
     })
   },
   onLoad: function(options) {
-    this.getConfig();
-    console.log(options)
-    var url = '';
-    if (options.type == null) {
-      rssType = 3;
-    } else {
-      rssType = parseInt(options.type);
-    }
-    switch (rssType) {
-      case 1:
-        url = config.host + '/rss/search.json?source=zhihu&type=daily';
-        break;
-      case 2:
-        url = config.host + '/rss/search.json?source=sina&type=daily&page=' + pagenum + '&size=10';
-        break;
-      case 3:
-        url = config.host + '/rss/search.json?source=toutiao&type=daily&page=' + pagenum + '&size=10';
-        break;
-      default:
-        url = config.host + '/rss/search.json?source=toutiao&type=daily&page=' + pagenum + '&size=10';
-        break;
-    }
-
-    //调用应用实例的方法获取全局数据
-    this.getData(url);
-    var rssConfig = getApp().globalData.config
-    for (var i = 0; i < rssConfig.length; i++) {
-      if (rssConfig[i].code == rssType) {
-        title = rssConfig[i].name;
-      }
-    }
-    this.setTabTitle(title);
-
+    this.getData(options);
   },
   upper: function() {
     wx.showNavigationBarLoading()
     pagenum = pagenum + 1;
-    this.refresh(rssType, pagenum);
+    this.refresh(source, pagenum);
     setTimeout(function() {
       wx.hideNavigationBarLoading();
       wx.stopPullDownRefresh();
@@ -83,16 +50,42 @@ Page({
     var that = this;
     setTimeout(function() {
       wx.hideNavigationBarLoading();
-      that.refresh(rssType, pagenum);
+      that.refresh(source, pagenum);
     }, 1000);
   },
-  getData: function(url) {
-    return util.getData(url).then(
+  getData: function(options) {
+    var that = this;
+    var url = config.host + '/mapping/search.json';
+    util.getData(url).then(
       (res) => {
-        let feed = res.data.data;
-        this.setData({
-          feed: feed,
-        })
+        var app = getApp();
+        var rssConf = wx.getStorageSync('config');
+        if (rssConf.length == 0) {
+          rssConf = res.data.data;
+          wx.setStorageSync('config', rssConf)
+        }
+        app.globalData.config = rssConf
+
+        var url = '';
+        var rssConfig = getApp().globalData.config ? getApp().globalData.config : '';
+        for (var i = 0; i < rssConfig.length; i++) {
+          if (rssConfig[i].code == options.type) {
+            title = rssConfig[i].name;
+            source = rssConfig[i].source;
+          }
+        }
+        this.setTabTitle(title);
+
+        url = config.host + '/rss/search.json?source=' + source + '&type=daily';
+
+        util.getData(url).then(
+          (res) => {
+            let feed = res.data.data;
+            this.setData({
+              feed: feed,
+            })
+          }
+        );
       }
     );
   },
@@ -107,23 +100,14 @@ Page({
     wx.showToast({
       title: '刷新中',
       icon: 'loading',
-      duration: 1200
+      duration: 500
     });
-    var url = '';
-    switch (source) {
-      case 1:
-        url = '';
-        break;
-      case 2:
-        url = config.host + '/rss/search.json?source=sina&type=daily&page=' + pagenum + '&size=10';
-        break;
-      case 3:
-        url = config.host + '/rss/search.json?source=toutiao&type=daily&page=' + pagenum + '&size=10';
-        break;
-      default:
-        url = config.host + '/rss/search.json?source=toutiao&type=daily&page=' + pagenum + '&size=10';
-    }
-    if (url.length > 0) {
+    var msg = '刷新成功';
+    if (source == 'zhihu') {
+      url = '';
+      msg = '刷完了，休息一下吧'
+    } else {
+      url = config.host + '/rss/search.json?source=' + source + '&type=daily';
       util.getData(url).then(
         (res) => {
           let content = res.data.data;
@@ -136,48 +120,40 @@ Page({
       );
     }
 
-
-
     setTimeout(function() {
       wx.showToast({
-        title: '刷新成功',
+        title: msg,
         icon: 'success',
-        duration: 1000
+        duration: 500
       })
-    }, 1200)
+    }, 600)
 
   },
 
-
-  //使用本地 fake 数据实现继续加载效果
-  nextLoad: function() {
-    wx.showToast({
-      title: '加载中',
-      icon: 'loading',
-      duration: 4000
-    })
-    var next = util.getData();
-    var next_data = next.data;
-    this.setData({
-      feed: this.data.feed.concat(next_data),
-      feed_length: this.data.feed_length + next_data.length
-    });
-    setTimeout(function() {
-      wx.showToast({
-        title: '加载成功',
-        icon: 'success',
-        duration: 2000
-      })
-    }, 3000)
-  },
   getConfig: function() {
-    var that = this
-    var app = getApp();
-    var rssConf = wx.getStorageSync('config');
-    if (!rssConf.length) {
-      rssConf = config.config;
-    }
-    app.globalData.config = rssConf
+    return new Promise(function(resolve, reject) {
+      var that = this;
+      console.log('getConfig')
+      var url = config.host + '/mapping/search.json';
+      util.getData(url).then(
+        (res) => {
+          console.log(res.data.data)
+          // let content = res.data.data;
+          var app = getApp();
+          var rssConf = wx.getStorageSync('config');
+          console.log(rssConf);
+          if (rssConf.length == 0) {
+            rssConf = res.data.data;
+            wx.setStorageSync('config', rssConf)
+          }
+          app.globalData.config = rssConf
+          console.log('aa')
+          console.log(app.globalData.config)
+          resolve(res)
+        }
+      );
+    });
+
   },
   globalData: {
     config: []

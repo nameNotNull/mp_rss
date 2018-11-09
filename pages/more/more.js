@@ -17,8 +17,12 @@ Page({
   },
   onLoad: function () {
     var that = this
+    var app = getApp();
+    var rssConf = wx.getStorageSync('config');
+   
+    // app.globalData.config = rssConf
     that.setData({
-      routers:config.config
+      routers: rssConf
     })
   }
 })

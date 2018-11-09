@@ -12,8 +12,8 @@
         <view class="answer-body">
           <view bindtap="bindItemTap" class="wxParse-img" data-id='{{item.id}}' data-source='{{item.source}}'>
             <div class="item-container images">
-              <div class = "{{item.images==false?'item-no-imgaes-title':'item-title'}}">{{item.title}}</div>
-              <div class = "{{item.images==false?'item-no-images':'item-images'}}">
+              <div class = "{{item.images==''?'item-no-imgaes-title':'item-title'}}">{{item.title}}</div>
+              <div class = "{{item.images==''?'item-no-images':'item-images'}}">
                 <image src="{{item.images}}" mode="widthFix" :lazy-load="true"></image>
               </div>
 

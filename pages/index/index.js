@@ -18,12 +18,12 @@ Page({
     feed: [],
     config: []
   },
-  // onShareAppMessage: function(res) {
-  //   return {
-  //     title: '小喵看看',
-  //     path: 'pages/index/index'
-  //   }
-  // },
+  onShareAppMessage: function(res) {
+    return {
+      title: '小喵看看',
+      path: 'pages/index/index'
+    }
+  },
 
 
   //事件处理函数
@@ -103,6 +103,7 @@ Page({
       duration: 500
     });
     var msg = '刷新成功';
+    var url = '';
     if (source == 'zhihu') {
       url = '';
       msg = '刷完了，休息一下吧'
